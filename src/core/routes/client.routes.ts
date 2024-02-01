@@ -1,6 +1,12 @@
 import { Router } from 'express';
-import { makeAddClientController } from '@/core/factory';
+import {
+  makeAddClientController,
+  makeReadClientController,
+} from '@/core/factory';
 
 export default (router: Router): void => {
-  router.route('/client').post(makeAddClientController);
+  router
+    .route('/client')
+    .post(makeAddClientController)
+    .get(makeReadClientController);
 };
