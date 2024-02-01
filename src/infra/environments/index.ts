@@ -8,11 +8,11 @@ export default {
   },
   DATABASE: {
     PG: {
-      USER: ENV.get<string>(''),
-      PASS: ENV.get<string>(''),
-      HOST: ENV.get<string>(''),
-      DB: ENV.get<string>(''),
-      PORT: ENV.get<number>('5432', 5432)
+      USER: ENV.get<string>('PG_USER'),
+      PASS: ENV.get<string>('PG_PASS'),
+      HOST: ENV.get<string>('PG_HOST'),
+      DB: ENV.get<string>('PG_DB'),
+      PORT: ENV.get<number>('PG_PORT', 5432)
     }
   }
 };
