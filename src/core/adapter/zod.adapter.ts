@@ -1,10 +1,11 @@
+import { ValidationError } from '@/layer/errors';
 import { Request, Response, NextFunction } from 'express';
 import { AnyZodObject } from 'zod';
 
 export class ValidatorAdapter {
   constructor(private readonly schema: AnyZodObject) {}
 
-  isValid = async (
+  public isValid = async (
     request: Request,
     response: Response,
     next: NextFunction
@@ -18,7 +19,9 @@ export class ValidatorAdapter {
       });
       return next();
     } catch (error) {
-      response.status(400).json(error);
+      if (error instanceof ValidationError) {
+        response.status(400).json(error);
+      }
     }
   };
 }
