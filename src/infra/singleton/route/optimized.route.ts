@@ -1,6 +1,5 @@
 import { Client } from '@/core/builder/client/client.builder';
 import { Permutator } from '@/core/strategy';
-import { TClient } from '@/domain/models/clients/clients';
 
 export class OptimizedRouteCalculator {
   private static instance: OptimizedRouteCalculator | null = null;
@@ -19,7 +18,7 @@ export class OptimizedRouteCalculator {
     return OptimizedRouteCalculator.instance;
   }
 
-  calculateOptimalRoute(): number[] {
+  public calculateOptimalRoute(): number[] {
     const numberOfClients = this.clients.length;
     const clientIndices = [...Array(numberOfClients).keys()];
 
