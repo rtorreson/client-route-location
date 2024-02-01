@@ -1,1 +1,1 @@
-export { default as PgInstance } from './pg.provider';
+export { default as PgPersistence } from './pg.provider';
