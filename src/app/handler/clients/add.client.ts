@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { Controller } from '@/domain/models';
 import { BaseController } from '@/core/factory/controllers/base';
 import { TClient } from '@/domain/models/clients/clients';
-import { Client } from '@/core/builder/client';
 import { ValidatorAdapter } from '@/core/adapter';
 import { createClientEntity } from './helpers/entitie';
 import { validate } from './helpers/validation';
