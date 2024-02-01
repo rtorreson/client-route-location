@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { AddClientHandler } from '@/app';
-import { ClientDataValidator } from '@/validators/client/client.validation';
+import { ClientDataValidator } from '@/validators/client';
 import { ValidatorAdapter } from '@/core/adapter';
 
 export const makeAddClientController = (
