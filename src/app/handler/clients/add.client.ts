@@ -19,15 +19,11 @@ export class AddClientHandler extends BaseController implements Controller {
     next: NextFunction
   ): Promise<Response | undefined> {
     try {
-      if (!request.body) {
-        return response.status(400).json({ message: 'Requisicao invalida' });
-      }
-
       await this.database.query({ sql: 'BEGIN' });
 
-      const { ...rest } = request.body as TClient;
-
       await validate(this.clientDataValidator, request, response, next);
+
+      const { ...rest } = request.body as TClient;
 
       const {
         cellphone,
@@ -40,14 +36,13 @@ export class AddClientHandler extends BaseController implements Controller {
 
       await this.database.query<TClient>({
         sql: `
-          INSERT INTO Catalog (nome, email, cellphone, coordinate_x, coordinate_y)
+          INSERT INTO catalog (nome, email, cellphone, coordinate_x, coordinate_y)
           VALUES ($1, $2, $3, $4, $5)
         `,
         values: [name, email, cellphone, x, y],
       });
 
       await this.database.query({ sql: 'COMMIT' });
-
       return response
         .status(200)
         .json({ message: 'Cliente criado com sucesso.' });
