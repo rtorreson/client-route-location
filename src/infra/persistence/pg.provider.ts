@@ -1,39 +1,15 @@
-import { Pool, PoolClient, QueryResultRow } from 'pg';
-import ENV from '@/infra/environments';
+import { PoolClient, QueryResultRow } from 'pg';
 import { GlobalError } from '@/layer/errors';
 import { Logger } from '@/layer';
+import PgConnection from '../singleton/postgre/postgre.singleton';
 
-class PgConnection {
-  private static instance: PgConnection;
-  private pool: Pool;
+class PgPersistence {
   private readonly logger: Logger;
+  private readonly connection: PgConnection;
 
-  private constructor() {
-    this.pool = new Pool({
-      user: ENV.DATABASE.PG.USER,
-      host: ENV.DATABASE.PG.HOST,
-      database: ENV.DATABASE.PG.DB,
-      password: ENV.DATABASE.PG.PASS,
-      port: ENV.DATABASE.PG.PORT,
-    });
-
+  constructor() {
     this.logger = new Logger();
-  }
-
-  static getInstance(): PgConnection {
-    if (!PgConnection.instance) {
-      PgConnection.instance = new PgConnection();
-    }
-    return PgConnection.instance;
-  }
-
-  async getClient(): Promise<PoolClient> {
-    const client = await this.pool.connect();
-    return client;
-  }
-
-  async release(client: PoolClient): Promise<void> {
-    client.release();
+    this.connection = PgConnection.getInstance();
   }
 
   async query<T extends QueryResultRow>({
@@ -43,7 +19,7 @@ class PgConnection {
     sql: string;
     values?: any[];
   }): Promise<QueryResultRow[]> {
-    const client = await this.pool.connect();
+    const client = await this.connection.getClient();
     try {
       const result = await client.query<T>(sql, values);
       return result.rows;
@@ -53,9 +29,9 @@ class PgConnection {
       }
       throw error;
     } finally {
-      this.release(client);
+      await this.connection.release(client);
     }
   }
 }
 
-export default PgConnection;
+export default PgPersistence;
