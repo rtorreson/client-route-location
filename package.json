@@ -12,7 +12,8 @@
     "helmet": "^7.1.0",
     "lusca": "^1.7.0",
     "pg": "^8.11.3",
-    "winston": "^3.11.0"
+    "winston": "^3.11.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
