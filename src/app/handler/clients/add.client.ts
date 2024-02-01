@@ -5,6 +5,7 @@ import { TClient } from '@/domain/models/clients/clients';
 import { ValidatorAdapter } from '@/core/adapter';
 import { createClientEntity } from './helpers/entitie';
 import { validate } from './helpers/validation';
+import { ReadDDLQueryPg } from '@/core/factory/controllers/query';
 
 export class AddClientHandler extends BaseController implements Controller {
   readonly clientDataValidator: ValidatorAdapter;
@@ -34,11 +35,10 @@ export class AddClientHandler extends BaseController implements Controller {
         ...rest,
       });
 
+      const ddlQuery = await new ReadDDLQueryPg('INSERT.sql').readQuery();
+
       await this.database.query<TClient>({
-        sql: `
-          INSERT INTO catalog (nome, email, cellphone, coordinate_x, coordinate_y)
-          VALUES ($1, $2, $3, $4, $5)
-        `,
+        sql: ddlQuery,
         values: [name, email, cellphone, x, y],
       });
 
