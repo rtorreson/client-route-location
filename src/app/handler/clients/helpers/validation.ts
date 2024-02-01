@@ -10,13 +10,7 @@ export const validate = async (
 ) => {
   try {
     await clientDataValidator.isValid(request, response, next);
-    next();
   } catch (error: unknown) {
-    if (error instanceof ValidationError) {
-      response.status(400).json({
-        message: 'Dados do cliente inválidos.',
-        errors: error.validationErrors,
-      });
-    }
+    throw error;
   }
 };
