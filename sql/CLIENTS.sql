@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS catalog (
   id SERIAL PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
   email VARCHAR(100) NOT NULL,
-  cellphone VARCHAR(11) NOT NULL,
+  cellphone VARCHAR(12) NOT NULL,
   coordinate_x FLOAT NOT NULL,
   coordinate_y FLOAT NOT NULL
 );
