@@ -22,7 +22,7 @@ export class ReadClientHandler extends BaseController implements Controller {
       });
 
       await this.database.query({ sql: 'COMMIT' });
-      return response.status(200).json(results);
+      return response.status(200).json({ message: 'success', results });
     } catch (error: unknown) {
       this.database.query({ sql: 'ROLLBACK' });
       this.handleGlobalError(response, error as Error);

@@ -1,10 +1,7 @@
 import { Client } from '@/core/builder/client/client.builder';
-import { Permutator } from '@/core/strategy';
 
 export class OptimizedRouteCalculator {
   private static instance: OptimizedRouteCalculator | null = null;
-  private shortestDistance: number = Number.MAX_SAFE_INTEGER;
-  private optimalOrder: number[] = [];
   private clients: Client[] = [];
 
   private constructor(clients: Client[]) {
@@ -18,50 +15,23 @@ export class OptimizedRouteCalculator {
     return OptimizedRouteCalculator.instance;
   }
 
-  public calculateOptimalRoute(): number[] {
-    const numberOfClients = this.clients.length;
-    const clientIndices = [...Array(numberOfClients).keys()];
+  public calculateOptimalRoute() {
+    const distancesFromOrigin = this.clients.map((client) => ({
+      distance: this.calculateDistance(client),
+      ...client
+    }));
 
-    const permutationGenerator = new Permutator();
-    const permutations =
-      permutationGenerator.generatePermutations(clientIndices);
+    distancesFromOrigin.sort(
+      (coordinate_x, coordinate_y) =>
+        coordinate_x.distance - coordinate_y.distance
+    );
 
-    this.calculate(permutations);
-
-    return this.optimalOrder;
+    return distancesFromOrigin.map((client) => client);
   }
 
-  private calculate(permutations: Generator<number[]>): void {
-    for (const currentPermutation of permutations) {
-      const totalDistance = this.calculateTotalDistance(currentPermutation);
-
-      if (totalDistance < this.shortestDistance) {
-        this.shortestDistance = totalDistance;
-        this.optimalOrder = [...currentPermutation];
-      }
-    }
-  }
-
-  private calculateTotalDistance(clientIndices: number[]): number {
-    return clientIndices.reduce((totalDistance, currentIndex, index) => {
-      const currentClient = this.clients[currentIndex];
-      const nextClient = this.clients[clientIndices[index + 1]];
-
-      if (nextClient) {
-        return (
-          totalDistance + this.calculateDistance(currentClient, nextClient)
-        );
-      } else {
-        return (
-          totalDistance + this.calculateDistance(currentClient, nextClient)
-        );
-      }
-    }, 0);
-  }
-
-  private calculateDistance(pointA: Client, pointB: Client): number {
-    const deltaX = pointB.coordinates.x - pointA.coordinates.x;
-    const deltaY = pointB.coordinates.y - pointA.coordinates.y;
+  private calculateDistance(client: Client): number {
+    const deltaX = client.coordinates.x - 0;
+    const deltaY = client.coordinates.y - 0;
     return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
   }
 }

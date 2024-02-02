@@ -8,5 +8,5 @@ export default (app: Express): void => {
     route(router);
   });
 
-  app.use('/v1', router);
+  app.use('/', router);
 };

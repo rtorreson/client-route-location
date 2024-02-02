@@ -5,8 +5,6 @@ import {
 } from '@/core/factory';
 
 export default (router: Router): void => {
-  router
-    .route('/client')
-    .post(makeAddClientController)
-    .get(makeReadClientController);
+  router.post('/add', makeAddClientController);
+  router.get('/list', makeReadClientController);
 };

@@ -37,7 +37,7 @@ export class AddClientHandler extends BaseController implements Controller {
 
       const ddlQuery = await new ReadDDLQueryPg('INSERT.sql').readQuery();
 
-      await this.database.query<TClient>({
+      const execute = await this.database.query<TClient>({
         sql: ddlQuery,
         values: [name, email, cellphone, x, y],
       });
