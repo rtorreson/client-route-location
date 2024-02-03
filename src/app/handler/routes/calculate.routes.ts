@@ -23,7 +23,7 @@ export class OptimizedRouteHandler extends BaseController {
       const clients = results.map((result: QueryResultRow) => {
         return new Client({
           id: result.id,
-          name: result.nome,
+          name: result.name,
           email: result.email,
           cellphone: result.cellphone,
           coordinates: {
